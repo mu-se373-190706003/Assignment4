@@ -1,0 +1,72 @@
+package com.example.calendar
+
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.icu.util.Calendar
+import android.os.Build
+import android.view.View
+import androidx.annotation.RequiresApi
+import com.example.mynewassignment.R
+import kotlinx.android.synthetic.main.activity_main.*
+
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+
+
+        @RequiresApi(Build.VERSION_CODES.N)
+        fun dateButton(view: View) {
+            when (view.id) {
+                R.id.myButton -> {
+                    // Date picker
+                    val ca = Calendar.getInstance()
+                    var mYear = ca[Calendar.YEAR]
+                    var mMonth = ca[Calendar.MONTH]
+                    var mDay = ca[Calendar.DAY_OF_MONTH]
+
+                    val datePickerDialog = DatePickerDialog(
+                        this,
+                        DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                            mYear = year
+                            mMonth = month
+                            mDay = dayOfMonth
+                            val mDate = "${year}/${month + 1}/${dayOfMonth}"
+                            // Assign the selected date to TextView
+                            myText.text = mDate
+                        },
+                        mYear, mMonth, mDay
+                    )
+                    datePickerDialog.show()
+                }
+                R.id.myButton -> {
+                    // time selector
+                    val ca = Calendar.getInstance()
+                    var mHour = ca[Calendar.HOUR_OF_DAY]
+                    var mMinute = ca[Calendar.MINUTE]
+
+                    val timePickerDialog = TimePickerDialog(
+                        this,
+                        TimePickerDialog.OnTimeSetListener{_, hourOfDay, minute ->
+                            mHour   = hourOfDay
+                            mMinute = minute
+                            val mTime = "${hourOfDay}:${minute}"
+                            myText.text = mTime
+                        },
+                        mHour, mMinute, true
+                    )
+                    timePickerDialog.show()
+                }
+            }
+        }
+
+
+
+
+
+    }
+}
